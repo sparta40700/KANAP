@@ -19,3 +19,20 @@ function addtocart(id, color, quantity) {
   };
   updateLocalStorage(productElements);
 }
+
+function countProduct(id, count, color) {
+  const productElements = getProductFromLocalStorage();
+  console.log(productElements);
+  productElements[id][color] = count;
+
+  updateLocalStorage(productElements);
+  location.reload();
+}
+function deleteItemSelect(itemId, itemColor) {
+  console.log(itemId);
+  console.log(itemColor);
+  const productElements = getProductFromLocalStorage();
+  delete productElements[itemId];
+  console.log(productElements);
+  updateLocalStorage(productElements);
+}

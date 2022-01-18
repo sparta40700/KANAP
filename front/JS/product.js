@@ -57,7 +57,7 @@ btnaddtocart.addEventListener("click", (Event) => {
   console.log(colors.value);
   console.log(document.querySelector("#quantity").value);
   const quantity = document.querySelector("#quantity").value;
-  if (quantity > 0 && quantity < 100) {
+  if (quantity > 0 && quantity <= 100) {
     addtocart(idProduct, colors.value, quantity);
   }
 });
