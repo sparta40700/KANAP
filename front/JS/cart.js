@@ -49,15 +49,12 @@ if (products) {
                   </div>
                 </div>
               </article>`;
-        /*<p>
-                Total (<span id="totalQuantity"> 2 </span> articles) :
-                <span id="totalPrice"> 84,00 </span> €
-              </p>*/
 
+        //CALCUL TOTAL
         totalQuantity.innerHTML = count;
         const priceTotal = response.price * count;
         totalPrice.innerHTML = priceTotal;
-
+        //MODIF PANIER
         const itemsQuantity = document.getElementsByClassName("itemQuantity");
         console.log(itemsQuantity);
         Object.values(itemsQuantity).forEach((item) => {
@@ -74,7 +71,7 @@ if (products) {
             }
           });
         });
-        /*rendre le bouton supprimé fonctionnel*/
+        //BOUTTON SUPPRIME
         const deleteItem = document.querySelectorAll(".deleteItem");
         deleteItem.forEach((btn) => {
           console.log(btn);
@@ -89,5 +86,61 @@ if (products) {
   }
 } else {
 }
+
+const btnSubmit = document.getElementById("order");
+btnSubmit.addEventListener("click", function (e) {
+  e.preventDefault();
+  console.log(btnSubmit);
+  let valid = false;
+
+  /***FIRST NAME***/
+  const firstName = document.getElementById("firstName");
+  const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
+  const nameRegex = /^[a-zA-Z\-]+$/;
+  console.log(firstName.value.match(nameRegex));
+  if (firstName.value === "") {
+    firstNameErrorMsg.innerHTML = "se champ ne  doit pas etre vide";
+    firstName.style.border = "2px solid red";
+  } else if (firstName.value.match(nameRegex) === null) {
+    firstNameErrorMsg.innerHTML =
+      "renseignez se champ sans caractères spéciaux et sans chiffres";
+    firstName.style.border = "2px solid red";
+  } else {
+    firstNameErrorMsg.innerHTML = "";
+    firstName.style.border = "2px solid green";
+    valid = true;
+  }
+
+  /******EMAIL*****/
+  const email = document.getElementById("email");
+  const emailReg = new RegExp(
+    "^([a-zA-Z0-9_-])+([.]?[a-zA-Z0-9_-]{1,})*@([a-zA-Z0-9-_]{2,}[.])+[a-zA-Z]{2,3}$"
+  );
+  const validationEmail = email.value.match(emailReg);
+
+  console.log(validationEmail);
+  if (email.value === "") {
+    emailErrorMsg.innerHTML = "se champ ne  doit pas etre vide";
+    email.style.border = "2px solid red";
+  } else if (validationEmail === false) {
+    emailErrorMsg.innerHTML = "se champ ne  doit pas etre vide";
+    email.style.border = "2px solid red";
+  } else {
+    emailErrorMsg.innerHTML = "";
+    email.style.border = "2px solid green";
+    valid = true;
+  }
+
+  if (valid === true) {
+    /**effectuer un FETCH pour envoie au serveur http://localhost:3000/api/products/order**/
+  }
+});
 /* validation du formulaire : add event btn au click pour validation, 
-regardez REGEX pour validation des champs et faire une request API pour envoyer la commande (order)
+regardez REGEX pour validation des champs et faire une request API pour envoyer la commande (order)*/
+/*function sendData(data) {
+  const XHR = new XMLHttpRequest();
+  const urlEncodedData = "http://127.0.0.1:5500/front/html/index.html";
+  const urlEncodedDataPairs = [];
+  const name;
+}
+*/

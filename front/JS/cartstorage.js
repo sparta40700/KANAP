@@ -36,3 +36,6 @@ function deleteItemSelect(itemId, itemColor) {
   console.log(productElements);
   updateLocalStorage(productElements);
 }
+function submit(cart_order) {
+  console.log(cart_order);
+}
