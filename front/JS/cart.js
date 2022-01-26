@@ -111,6 +111,59 @@ btnSubmit.addEventListener("click", function (e) {
     valid = true;
   }
 
+  /**LAST NAME**/
+  const lastName = document.getElementById("lastName");
+  const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
+  const nameRegex = /^[a-zA-Z\-]+$/;
+  console.log(lastName.value.match(nameRegex));
+  if (lastName.value === "") {
+    lastNameErrorMsg.innerHTML = "se champ ne  doit pas etre vide";
+    lastName.style.border = "2px solid red";
+  } else if (lastName.value.match(nameRegex) === null) {
+    lastNameErrorMsg.innerHTML =
+      "renseignez se champ sans caractères spéciaux et sans chiffres";
+    lastName.style.border = "2px solid red";
+  } else {
+    lastNameErrorMsg.innerHTML = "";
+    lastName.style.border = "2px solid green";
+    valid = true;
+  }
+
+  /**ADRESS***/
+  const address = document.getElementById("address");
+  const addressErrorMsg = document.getElementById("addressErrorMsg");
+  const nameRegex = "([0-9a-zA-Z,. ]*) ?([0-9]{5}) ?([a-zA-Z]*)";
+  console.log(address.value.match(nameRegex));
+  if (address.value === "") {
+    addressErrorMsg.innerHTML = "se champ ne  doit pas etre vide";
+    address.style.border = "2px solid red";
+  } else if (address.value.match(nameRegex) === null) {
+    addressErrorMsg.innerHTML =
+      "renseignez se champ sans caractères spéciaux et sans chiffres";
+    address.style.border = "2px solid red";
+  } else {
+    addressErrorMsg.innerHTML = "";
+    address.style.border = "2px solid green";
+    valid = true;
+  }
+  /***CITY****/
+  const city = document.getElementById("city");
+  const cityErrorMsg = document.getElementById("cityErrorMsg");
+  const nameRegex = "([0-9a-zA-Z,. ]*) ?([0-9]{5}) ?([a-zA-Z]*)";
+  console.log(city.value.match(nameRegex));
+  if (city.value === "") {
+    cityErrorMsg.innerHTML = "se champ ne  doit pas etre vide";
+    city.style.border = "2px solid red";
+  } else if (city.value.match(nameRegex) === null) {
+    cityErrorMsg.innerHTML =
+      "renseignez se champ sans caractères spéciaux et sans chiffres";
+    city.style.border = "2px solid red";
+  } else {
+    cityErrorMsg.innerHTML = "";
+    city.style.border = "2px solid green";
+    valid = true;
+  }
+
   /******EMAIL*****/
   const email = document.getElementById("email");
   const emailReg = new RegExp(
