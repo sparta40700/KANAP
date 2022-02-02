@@ -39,3 +39,14 @@ function deleteItemSelect(itemId, itemColor) {
 function submit(cart_order) {
   console.log(cart_order);
 }
+
+function getProductId(products) {
+  console.log(products);
+  let ids = [];
+  for (const [id, colors] of Object.entries(products)) {
+    console.log(id);
+    ids.push(id);
+  }
+  console.log(ids);
+  return ids;
+}

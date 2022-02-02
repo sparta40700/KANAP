@@ -1,3 +1,8 @@
+/*const { get } = require("http");
+const { route, post } = require("../../back/routes/product");*/
+
+//const { error } = require("console");
+
 const cart = document.getElementById("cart__items");
 const products = getProductFromLocalStorage();
 const totalQuantity = document.getElementById("totalQuantity");
@@ -94,7 +99,7 @@ btnSubmit.addEventListener("click", function (e) {
   let valid = false;
 
   /***FIRST NAME***/
-  const firstName = document.getElementById("firstName");
+  let firstName = document.getElementById("firstName");
   const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
   const nameRegex = /^[a-zA-Z\-]+$/;
   console.log(firstName.value.match(nameRegex));
@@ -112,9 +117,9 @@ btnSubmit.addEventListener("click", function (e) {
   }
 
   /**LAST NAME**/
-  const lastName = document.getElementById("lastName");
+  let lastName = document.getElementById("lastName");
   const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
-  const nameRegex = /^[a-zA-Z\-]+$/;
+  //const nameRegex = "^[A-Z][a-zA-Z-]+$";
   console.log(lastName.value.match(nameRegex));
   if (lastName.value === "") {
     lastNameErrorMsg.innerHTML = "se champ ne  doit pas etre vide";
@@ -130,14 +135,14 @@ btnSubmit.addEventListener("click", function (e) {
   }
 
   /**ADRESS***/
-  const address = document.getElementById("address");
+  let address = document.getElementById("address");
   const addressErrorMsg = document.getElementById("addressErrorMsg");
-  const nameRegex = "([0-9a-zA-Z,. ]*) ?([0-9]{5}) ?([a-zA-Z]*)";
-  console.log(address.value.match(nameRegex));
+  const adressRegex = /^[a-zA-Z0-9\s,'-]*$/;
+  console.log(address.value.match(adressRegex));
   if (address.value === "") {
     addressErrorMsg.innerHTML = "se champ ne  doit pas etre vide";
     address.style.border = "2px solid red";
-  } else if (address.value.match(nameRegex) === null) {
+  } else if (address.value.match(adressRegex) === null) {
     addressErrorMsg.innerHTML =
       "renseignez se champ sans caractères spéciaux et sans chiffres";
     address.style.border = "2px solid red";
@@ -147,14 +152,14 @@ btnSubmit.addEventListener("click", function (e) {
     valid = true;
   }
   /***CITY****/
-  const city = document.getElementById("city");
+  let city = document.getElementById("city");
   const cityErrorMsg = document.getElementById("cityErrorMsg");
-  const nameRegex = "([0-9a-zA-Z,. ]*) ?([0-9]{5}) ?([a-zA-Z]*)";
-  console.log(city.value.match(nameRegex));
+  const cityRegex = /^[a-zA-Z\-]+$/;
+  console.log(city.value.match(cityRegex));
   if (city.value === "") {
     cityErrorMsg.innerHTML = "se champ ne  doit pas etre vide";
     city.style.border = "2px solid red";
-  } else if (city.value.match(nameRegex) === null) {
+  } else if (city.value.match(cityRegex) === null) {
     cityErrorMsg.innerHTML =
       "renseignez se champ sans caractères spéciaux et sans chiffres";
     city.style.border = "2px solid red";
@@ -165,7 +170,7 @@ btnSubmit.addEventListener("click", function (e) {
   }
 
   /******EMAIL*****/
-  const email = document.getElementById("email");
+  let email = document.getElementById("email");
   const emailReg = new RegExp(
     "^([a-zA-Z0-9_-])+([.]?[a-zA-Z0-9_-]{1,})*@([a-zA-Z0-9-_]{2,}[.])+[a-zA-Z]{2,3}$"
   );
@@ -185,11 +190,40 @@ btnSubmit.addEventListener("click", function (e) {
   }
 
   if (valid === true) {
+    let productsId = getProductId(products);
+    firstName = firstName.value;
+    lastName = lastName.value;
+    address = address.value;
+    city = city.value;
+    email = email.value;
     /**effectuer un FETCH pour envoie au serveur http://localhost:3000/api/products/order**/
+    fetch("http://localhost:3000/api/products/order", {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        contact: {
+          firstName,
+          lastName,
+          address,
+          city,
+          email,
+        },
+        products: productsId,
+      }),
+    })
+      .then(async (result) => {
+        const apiResult = await result.json();
+        console.log(apiResult);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 });
-/* validation du formulaire : add event btn au click pour validation, 
-regardez REGEX pour validation des champs et faire une request API pour envoyer la commande (order)*/
+
 /*function sendData(data) {
   const XHR = new XMLHttpRequest();
   const urlEncodedData = "http://127.0.0.1:5500/front/html/index.html";
