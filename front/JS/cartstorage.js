@@ -11,12 +11,38 @@ function updateLocalStorage(products) {
   storage.setItem("CartProducts", JSON.stringify(products));
 }
 
+function getCountProduct(id, color) {
+  const localStorage = getProductFromLocalStorage();
+  console.log(localStorage);
+  if (localStorage[id][color]) {
+    console.log(localStorage[id][color]);
+    return localStorage[id][color];
+  }
+  /*reccuper le local storage puis le mettre dans une variable, faire une condition pour savoir si le 
+  idcolor existe, effectuer un return de la quantity
+   */
+}
+
 function addtocart(id, color, quantity) {
   const productElements = getProductFromLocalStorage();
   console.log(productElements);
-  productElements[id] = {
-    [color]: quantity,
-  };
+  if (productElements[id]) {
+    console.log("existe déjà");
+    if (productElements[id][color]) {
+      const currentCount = getCountProduct(id, color);
+      productElements[id][color] = parseInt(currentCount) + parseInt(quantity);
+    } else {
+      console.log("initialisation");
+      productElements[id][color] = parseInt(quantity);
+      console.log(parseInt(quantity));
+    }
+  }
+  if (!productElements[id]) {
+    productElements[id] = {
+      [color]: quantity,
+    };
+  }
+
   updateLocalStorage(productElements);
 }
 

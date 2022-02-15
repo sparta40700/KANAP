@@ -217,6 +217,7 @@ btnSubmit.addEventListener("click", function (e) {
       .then(async (result) => {
         const apiResult = await result.json();
         console.log(apiResult);
+        window.location = "confirmation.html?orderId=" + apiResult.orderId;
       })
       .catch((error) => {
         console.log(error);
