@@ -1,43 +1,21 @@
 /**@module js/index */
 
-//console.log(aide à debuguer)
-// reccuperer les produits cote serveur via l'adresse http://localhost:3000/api/products
-//boucler (for each) sur la variables qui contient tout les produits
-//reccuperer la section "id" "items"
 const items = document.getElementById("items");
 console.log(items);
-//chaque boucle creer le code html pour l'injecter
+
+//reccuperation de l'API produit
 async function getProducts() {
   const response = await fetch("http://localhost:3000/api/products");
   return response.json();
 }
-/*const products = fetch("http://localhost:3000/api/products")
-  .then(function (res) {
-    if (res.ok) {
-      console.log(res.json());
-      const products = res.json();
-      return products;
-    }
-  })
-  .then(function (value) {
-    console.log(value);
-  })
-  .catch(function (err) {
-     Une erreur est survenue
-  });*/
+
 const products = await getProducts();
 console.log(products);
+//je boucle dans les produits recus de l'API
 products.forEach((element) => {
   console.log(element.name);
-  //innerHTML
-  /*items.innerHTML +=
-    '<img width="100px" src="' +
-    element.imageUrl +
-    '" alt="' +
-    element.altTxt +
-    element.name +
-    element.price +
-    '"/>';*/
+
+  // INJECTION DES PRODUITS DE L'API DANS L'HTML
   items.innerHTML += `<a href="./product.html?id=${element._id}">
             <article>
               <img

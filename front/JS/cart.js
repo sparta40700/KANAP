@@ -1,8 +1,3 @@
-/*const { get } = require("http");
-const { route, post } = require("../../back/routes/product");*/
-
-//const { error } = require("console");
-
 const cart = document.getElementById("cart__items");
 const products = getProductFromLocalStorage();
 const totalQuantity = document.getElementById("totalQuantity");
@@ -14,11 +9,10 @@ if (products) {
   for (const [id, colors] of Object.entries(products)) {
     for (const [color, count] of Object.entries(colors)) {
       console.log(id);
-      let productfromapi = fetch(
-        "http://localhost:3000/api/products/" + id
-      ).then(async (result) => {
+      fetch("http://localhost:3000/api/products/" + id).then(async (result) => {
         const response = await result.json();
         console.log(response);
+        //injection js dans l'html
         cart.innerHTML += `<article
                 class="cart__item"
                 data-id="${response._id}"
@@ -55,10 +49,24 @@ if (products) {
                 </div>
               </article>`;
 
-        //CALCUL TOTAL
-        totalQuantity.innerHTML = count;
+        //QUANTITE TOTAL
+        console.log(totalQuantity);
+        if (totalQuantity.innerHTML === " ") {
+          totalQuantity.innerHTML = "0";
+        }
+        const previousQuantity = parseInt(totalQuantity.innerHTML);
+        const finalQuantity = previousQuantity + parseInt(count);
+        totalQuantity.innerHTML = finalQuantity.toString();
+
+        //PRIX TOTAL
         const priceTotal = response.price * count;
-        totalPrice.innerHTML = priceTotal;
+        if (totalPrice.innerHTML === " ") {
+          totalPrice.innerHTML = "0";
+        }
+        const finalPrice =
+          parseInt(priceTotal) + parseInt(totalPrice.innerHTML);
+        totalPrice.innerHTML = finalPrice.toString();
+        console.log(finalPrice);
         //MODIF PANIER
         const itemsQuantity = document.getElementsByClassName("itemQuantity");
         console.log(itemsQuantity);
@@ -91,7 +99,7 @@ if (products) {
   }
 } else {
 }
-
+//validation formulaire
 const btnSubmit = document.getElementById("order");
 btnSubmit.addEventListener("click", function (e) {
   e.preventDefault();
@@ -119,7 +127,6 @@ btnSubmit.addEventListener("click", function (e) {
   /**LAST NAME**/
   let lastName = document.getElementById("lastName");
   const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
-  //const nameRegex = "^[A-Z][a-zA-Z-]+$";
   console.log(lastName.value.match(nameRegex));
   if (lastName.value === "") {
     lastNameErrorMsg.innerHTML = "se champ ne  doit pas etre vide";
@@ -171,6 +178,7 @@ btnSubmit.addEventListener("click", function (e) {
 
   /******EMAIL*****/
   let email = document.getElementById("email");
+  const emailErrorMsg = document.getElementById("emailErrorMsg");
   const emailReg = new RegExp(
     "^([a-zA-Z0-9_-])+([.]?[a-zA-Z0-9_-]{1,})*@([a-zA-Z0-9-_]{2,}[.])+[a-zA-Z]{2,3}$"
   );
@@ -188,7 +196,7 @@ btnSubmit.addEventListener("click", function (e) {
     email.style.border = "2px solid green";
     valid = true;
   }
-
+  //envoie de la commande à l'API avec POST
   if (valid === true) {
     let productsId = getProductId(products);
     firstName = firstName.value;
@@ -196,7 +204,7 @@ btnSubmit.addEventListener("click", function (e) {
     address = address.value;
     city = city.value;
     email = email.value;
-    /**effectuer un FETCH pour envoie au serveur http://localhost:3000/api/products/order**/
+
     fetch("http://localhost:3000/api/products/order", {
       method: "post",
       headers: {
@@ -224,11 +232,3 @@ btnSubmit.addEventListener("click", function (e) {
       });
   }
 });
-
-/*function sendData(data) {
-  const XHR = new XMLHttpRequest();
-  const urlEncodedData = "http://127.0.0.1:5500/front/html/index.html";
-  const urlEncodedDataPairs = [];
-  const name;
-}
-*/

@@ -1,50 +1,45 @@
-//URLsearchparams
-//reccuper l'api product
-
-//appeler img/desc/couleur/tittre et prix
+//allez chercher les paramètre dans l'url
 let urlparam = new URLSearchParams(window.location.search);
-console.log(new URLSearchParams(window.location.search));
-console.log(urlparam.get("id"));
 let idProduct = urlparam.get("id");
 
-// localhost:3000/api/products/107fb5b75607497b96722bda5b504926
-let productfromapi = fetch(
-  "http://localhost:3000/api/products/" + idProduct
-).then(async (result) => {
-  const response = await result.json();
-  console.log(response);
-  let tittle = document.getElementById("title");
-  console.log(tittle);
-  tittle.innerHTML = response.name;
+//appel API pour un seul produit (idProduct)
+fetch("http://localhost:3000/api/products/" + idProduct).then(
+  async (result) => {
+    //réccupération de la réponse
+    const response = await result.json();
+    console.log(response);
+    //injection des informations produits
+    let tittle = document.getElementById("title");
+    console.log(tittle);
+    tittle.innerHTML = response.name;
 
-  let price = document.getElementById("price");
-  console.log(price);
-  price.innerHTML = response.price;
+    let price = document.getElementById("price");
+    console.log(price);
+    price.innerHTML = response.price;
 
-  let item__img = document.querySelector(".item__img img");
-  console.log(item__img);
-  item__img.setAttribute("src", response.imageUrl);
-  item__img.setAttribute("alt", response.altTxt);
+    let item__img = document.querySelector(".item__img img");
+    console.log(item__img);
+    item__img.setAttribute("src", response.imageUrl);
+    item__img.setAttribute("alt", response.altTxt);
 
-  let description = document.getElementById("description");
-  console.log(description);
-  description.innerHTML = response.description;
-  let colors = document.getElementById("colors");
-  console.log(colors);
-  const colorsArray = response.colors;
-  console.log(colorsArray);
-  colorsArray.forEach((color) => {
-    console.log(color);
-    let option = document.createElement("option");
-    option.value = color;
-    option.innerHTML = color;
-    colors.appendChild(option);
-  });
-});
-const newLocal =
-  '<img width="default" src="http://localhost:3000/api/products/"';
-//rajouter un evenement au click sur le button add to cart
-//mettre en place le traitement
+    let description = document.getElementById("description");
+    console.log(description);
+    description.innerHTML = response.description;
+    //réccupération du select dans le HTML
+    let colors = document.getElementById("colors");
+    console.log(colors);
+    const colorsArray = response.colors;
+    console.log(colorsArray);
+    //on boucle dans le tableau colorsArray
+    colorsArray.forEach((color) => {
+      console.log(color);
+      let option = document.createElement("option");
+      option.value = color;
+      option.innerHTML = color;
+      colors.appendChild(option);
+    });
+  }
+);
 
 /**********PANIER**********/
 //select id product
@@ -61,27 +56,3 @@ btnaddtocart.addEventListener("click", (Event) => {
     addtocart(idProduct, colors.value, quantity);
   }
 });
-// reccupération des données
-
-/*let optionProducts = {
-  name: idProduct.name,
-  id_Product: idProduct._id,
-  optionProducts: option,
-  quantity: option /100,
-  price: idProduct.price,
-};
-
-/**********LOCAL STORAGE************/
-
-/*mypc = localStorage;
-const localStorage = mypc;
-let productfromapi = JSON.parse(localStorage.getItem("products"));
-console.log(productfromapi);
-
-if (productfromapi) {
-} else {
-  productfromapi = [];
-  productfromapi.push(option);
-  console.log(productfromapi);
-  localstorage.setItem("products",JSON.stringify(productfromapi));
-}*/

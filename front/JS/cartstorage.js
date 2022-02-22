@@ -1,4 +1,9 @@
+//reccuperation du stockage local
 const storage = localStorage;
+/**
+ *reccuperation de tout les produits provenant du localstorage
+ * @returns {json}
+ */
 function getProductFromLocalStorage() {
   const products = storage.getItem("CartProducts");
   if (!products) {
@@ -6,11 +11,15 @@ function getProductFromLocalStorage() {
   }
   return JSON.parse(products);
 }
-
+/**
+ * actualisation du localstorage
+ * @param products
+ * @returns void
+ */
 function updateLocalStorage(products) {
   storage.setItem("CartProducts", JSON.stringify(products));
 }
-
+//obtention de la quantitée d'un produit sélectionné par l'utilisateur
 function getCountProduct(id, color) {
   const localStorage = getProductFromLocalStorage();
   console.log(localStorage);
@@ -18,11 +27,8 @@ function getCountProduct(id, color) {
     console.log(localStorage[id][color]);
     return localStorage[id][color];
   }
-  /*reccuper le local storage puis le mettre dans une variable, faire une condition pour savoir si le 
-  idcolor existe, effectuer un return de la quantity
-   */
 }
-
+//AJOUT AU PANIER
 function addtocart(id, color, quantity) {
   const productElements = getProductFromLocalStorage();
   console.log(productElements);
@@ -58,14 +64,19 @@ function deleteItemSelect(itemId, itemColor) {
   console.log(itemId);
   console.log(itemColor);
   const productElements = getProductFromLocalStorage();
-  delete productElements[itemId];
+  console.log(productElements);
+  console.log(Object.keys(productElements[itemId]));
+  if (Object.keys(productElements[itemId]).length > 1) {
+    delete productElements[itemId][itemColor];
+  } else {
+    delete productElements[itemId];
+  }
+
   console.log(productElements);
   updateLocalStorage(productElements);
+  location.reload();
 }
-function submit(cart_order) {
-  console.log(cart_order);
-}
-
+//reccuperation de l'id produit pour la commande
 function getProductId(products) {
   console.log(products);
   let ids = [];
